@@ -16,24 +16,23 @@ def pregunta_11():
 
 
     """
-    suma = {}
+import csv
 
-    with open("data.csv", "r", encoding="utf-8") as archivo:
-        for linea in archivo:
-            columnas = linea.strip().split(",")
+def pregunta_11():
+    route = "files/input/data.csv"
+    # Diccionario que almacena los registros
+    dic = {}
+    with open(route, 'r', encoding='utf-8') as archivo:
+        lector_csv = csv.reader(archivo, delimiter='\t')
+        for fila in lector_csv:
+            # Obtenemos las letra de la columna 4, y se itera sobre ellos
+            letras__col4 = fila[3].split(',')
 
-            valor = int(columnas[1])
-            letras = columnas[3].split("|")
-
-            for letra in letras:
-                if letra in suma:
-                    suma[letra] += valor
+            for letra in letras__col4:
+                # Si no exta en el diccionario, se agrega
+                if letra not in dic:
+                    dic[letra] = int(fila[1])
                 else:
-                    suma[letra] = valor
-
-    resultado = {}
-
-    for letra in sorted(suma):
-        resultado[letra] = suma[letra]
-
-    return resultado
+                    dic[letra] += int(fila[1])
+    
+    return dic

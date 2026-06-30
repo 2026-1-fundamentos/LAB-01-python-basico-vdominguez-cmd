@@ -27,30 +27,43 @@ def pregunta_06():
 
     """
 
-    datos = {}
+import csv
 
-    with open("data.csv", "r", encoding="utf-8") as archivo:
-        for linea in archivo:
-            columnas = linea.strip().split(",")
-            diccionario = columnas[4]
-
-            pares = diccionario.split(",")
-
-            for par in pares:
-                clave, valor = par.split(":")
+def pregunta_06():
+    route = "files/input/data.csv"
+    # Diccionario que almacena los registros
+    dic = {}
+    with open(route, 'r', encoding='utf-8') as archivo:
+        lector_csv = csv.reader(archivo, delimiter='\t')
+        for fila in lector_csv:
+            # Se toma una linea de la columna 5
+            cadena= fila[4]
+            # Se divide la cadena, separa por comas
+            datos = cadena.split(',')
+            
+            #
+            # Se itera sobre cada uno de los datos separados
+            #
+            for dato in datos:
+                # Se separan en pares de clave valor
+                clave, valor = dato.split(':')
                 valor = int(valor)
+                
 
-                if clave not in datos:
-                    datos[clave] = [valor, valor]  # [mínimo, máximo]
+                # Si no esta en el diccionario, se crea
+                if clave not in dic:
+                    dic[clave] = [valor, valor]
+
+                # Si esta, se comprueban sus tuplas para tomar valores máximos y minimos
                 else:
-                    if valor < datos[clave][0]:
-                        datos[clave][0] = valor
-                    if valor > datos[clave][1]:
-                        datos[clave][1] = valor
+                    if valor <= dic[clave][0]:
+                        dic[clave][0] = valor
 
-    resultado = []
+                    elif valor >= dic[clave][1]:
+                        dic[clave][1] = valor
 
-    for clave in sorted(datos):
-        resultado.append((clave, datos[clave][0], datos[clave][1]))
-
-    return resultado
+    # Retorna en el orden pedido
+    # En onde se mete, que se mete, ciclo for
+    lista = [(clave, valor[0], valor[1]) for clave, valor in sorted(dic.items())]
+    
+    return lista

@@ -27,23 +27,34 @@ def pregunta_08():
      (9, ['A', 'B', 'C', 'E'])]
 
     """
-    datos = {}
+import csv
 
-    with open("data.csv", "r", encoding="utf-8") as archivo:
-        for linea in archivo:
-            columnas = linea.strip().split(",")
-            letra = columnas[0]
-            valor = int(columnas[1])
-
-            if valor not in datos:
-                datos[valor] = []
-
-            if letra not in datos[valor]:
-                datos[valor].append(letra)
-
-    resultado = []
-
-    for valor in sorted(datos):
-        resultado.append((valor, sorted(datos[valor])))
-
-    return resultado
+def pregunta_08():
+    route = "files/input/data.csv"
+    # Diccionario que almacena los registros
+    dic = {}
+    with open(route, 'r', encoding='utf-8') as archivo:
+        lector_csv = csv.reader(archivo, delimiter='\t')
+        for fila in lector_csv:
+            # Se toma una linea de la columna 5
+            num= int(fila[1])
+            
+            # Si no esta en el diccionario, se crea
+            if num not in dic:
+                dic[num] = [fila[0]]
+            # Se añaden letras al diccionario en caso de que ya exista su clave
+            else:
+                # Se evaden los duplicados
+                if fila[0] not in dic[num]:
+                    dic[num].append(fila[0])
+                else:
+                    continue
+    
+    # Se ordenan las letras de cada numero correspondiente
+    for clave in dic:
+        dic[clave].sort()
+        
+    # Se ponen en formato de tupla  se ordena en base a su número(menor a mayor)
+    lista = [(clave, valor) for clave, valor in sorted(dic.items())]
+    
+    return lista

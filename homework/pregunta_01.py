@@ -14,13 +14,20 @@ def pregunta_01():
     214
 
     """
-    suma = 0
+import csv
+def pregunta_01():
+    route = "files/input/data.csv"
+    # Almacena todos los valores de la columna 2
+    suma = []
+    with open(route, 'r', encoding='utf-8') as archivo:
+        lector_csv = csv.reader(archivo, delimiter='\t')
+        for fila in lector_csv:
+            # Añade los valores de la columna 2 y los convierte en enteros
+            suma.append(int(fila[1]))
 
-    with open("data.csv", "r", encoding="utf-8") as archivo:
-        for linea in archivo:
-            columnas = linea.strip().split(",")
-            suma += int(columnas[1])
-
-    return suma
+        # Retorna resultado
+        suma = sum(suma)
+        
+        return suma
 
 

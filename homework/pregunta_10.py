@@ -20,16 +20,19 @@ def pregunta_10():
 
 
     """
-    resultado = []
+import csv
 
-    with open("data.csv", "r", encoding="utf-8") as archivo:
-        for linea in archivo:
-            columnas = linea.strip().split(",")
-
-            letra = columnas[0]
-            cantidad_col4 = len(columnas[3].split("|"))
-            cantidad_col5 = len(columnas[4].split(","))
-
-            resultado.append((letra, cantidad_col4, cantidad_col5))
-
-    return resultado
+def pregunta_10():
+    route = "files/input/data.csv"
+    lista = []
+    # Diccionario que almacena los registros
+    with open(route, 'r', encoding='utf-8') as archivo:
+        lector_csv = csv.reader(archivo, delimiter='\t')
+        for fila in lector_csv:
+            # Se toma la letra, junto con las cantidades de datos de la columna 4 y 5
+            letra = fila[0]
+            cantidad_col4 = len(fila[3].split(','))
+            cantidad_col5 = len(fila[4].split(','))
+            lista.append((letra, cantidad_col4, cantidad_col5))
+    
+    return lista

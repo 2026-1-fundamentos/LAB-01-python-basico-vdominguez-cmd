@@ -16,23 +16,28 @@ def pregunta_12():
 
     """
 
-    suma = {}
+import csv
+def pregunta_12():
+    route = "files/input/data.csv"
+    # Diccionario que almacena los registros
+    dic = {}
+    with open(route, 'r', encoding='utf-8') as archivo:
+        lector_csv = csv.reader(archivo, delimiter='\t')
+        for fila in lector_csv:
+            # Se toma la clave y los valores de cada fila
+            clave = fila[0]
+            # Se divide cada fragmento jjj:numero
+            aux = fila[4].split(',')
+            # Se toma solo el numero de cada fragmento
+            valores = [int(valor.split(':')[1]) for valor in aux]
+            # Se suman los valores
+            suma = sum(valores)
 
-    with open("data.csv", "r", encoding="utf-8") as archivo:
-        for linea in archivo:
-            columnas = linea.strip().split(",")
-
-            letra = columnas[0]
-            pares = columnas[4].split(",")
-
-            total = 0
-            for par in pares:
-                valor = int(par.split(":")[1])
-                total += valor
-
-            if letra in suma:
-                suma[letra] += total
+            #
+            # Si no esta en el diccionario, se agrega
+            if clave not in dic:
+                dic[clave] = suma
             else:
-                suma[letra] = total
+                dic[clave] += suma
 
-    return suma
+    return dic

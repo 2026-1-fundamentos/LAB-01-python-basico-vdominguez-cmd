@@ -15,16 +15,27 @@ def pregunta_02():
     [('A', 8), ('B', 7), ('C', 5), ('D', 6), ('E', 14)]
 
     """
-    conteo = {}
+import csv
 
-    with open("data.csv", "r", encoding="utf-8") as archivo:
-        for linea in archivo:
-            columnas = linea.strip().split(",")
-            letra = columnas[0]
-
-            if letra in conteo:
-                conteo[letra] += 1
+def pregunta_02():
+    route = "files/input/data.csv"
+    # Diccionario que almacena los registros
+    dic = {}
+    with open(route, 'r', encoding='utf-8') as archivo:
+        lector_csv = csv.reader(archivo, delimiter='\t')
+        for fila in lector_csv:
+            # Añade los valores de la columna 2 y los convierte en enteros
+            # Si existe
+            if fila[0] in dic:
+                dic[fila[0]] += 1
+            # Si no existe
             else:
-                conteo[letra] = 1
+                dic[fila[0]] = 1
 
-    return sorted(conteo.items())
+    # Se obtienen los objetos del dic, y se ordenan en base a su letra
+    lista = list(dic.items())
+    lista.sort()
+
+    return lista
+
+print(pregunta_02())

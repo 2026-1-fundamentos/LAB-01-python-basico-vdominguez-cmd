@@ -16,25 +16,33 @@ def pregunta_05():
 
     """
 
-    datos = {}
+import csv
 
-    with open("data.csv", "r", encoding="utf-8") as archivo:
-        for linea in archivo:
-            columnas = linea.strip().split(",")
-            letra = columnas[0]
-            valor = int(columnas[1])
+def pregunta_05():
+    route = "files/input/data.csv"
+    # Diccionario que almacena los registros
+    dic = {}
+    with open(route, 'r', encoding='utf-8') as archivo:
+        lector_csv = csv.reader(archivo, delimiter='\t')
+        for fila in lector_csv:
+            # Se toma la letra de la col 1, y el numero de la col 2
+            letra = fila[0]
+            numero = int(fila[1])
 
-            if letra not in datos:
-                datos[letra] = [valor, valor]  # [máximo, mínimo]
+            # Si no esta en el diccionario, se crea
+            if letra not in dic:
+                dic[letra] = [numero, numero]
+
+            # Si esta, se comprueban sus tuplas para tomar valores máximos y minimos
             else:
-                if valor > datos[letra][0]:
-                    datos[letra][0] = valor
-                if valor < datos[letra][1]:
-                    datos[letra][1] = valor
+                if numero >= dic[letra][0]:
+                    dic[letra][0] = numero
 
-    resultado = []
+                elif numero <= dic[letra][1]:
+                    dic[letra][1] = numero
 
-    for letra in sorted(datos):
-        resultado.append((letra, datos[letra][0], datos[letra][1]))
-
-    return resultado
+    # Retorna en el orden pedido
+    # En onde se mete, que se mete, ciclo for
+    lista = [(clave, valor[0], valor[1]) for clave, valor in sorted(dic.items())]
+    
+    return lista
